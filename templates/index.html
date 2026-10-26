@@ -1,1 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business English Trainer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        .htmx-indicator { display: none; }
+        .htmx-request .htmx-indicator { display: block; }
+        .htmx-request.htmx-indicator { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .animate-fade-in { animation: fadeIn 0.3s ease-in; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-8 font-sans">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-md min-h-[700px] flex flex-col justify-between">
+        
+        <!-- Header -->
+        <div class="border-b pb-4 mb-6 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Unit 1: Plan Before You Type</h1>
+            <span class="text-sm font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-full" id="slide-counter">Part 1 of 7</span>
+        </div>
 
+        <!-- SLIDE 1: Vocabulary -->
+        <div id="slide-1" class="lesson-slide block">
+            <h2 class="text-xl font-bold text-indigo-900 mb-4">1. New Vocabulary</h2>
+            <p class="text-gray-700 mb-6">Review these words before we begin.</p>
+            <ul class="space-y-3">
+                <li class="bg-gray-50 p-3 rounded border border-gray-200"><strong>subject:</strong> what an email is about</li>
+                <li class="bg-gray-50 p-3 rounded border border-gray-200"><strong>reader:</strong> the person who reads your email</li>
+                <li class="bg-gray-50 p-3 rounded border border-gray-200"><strong>purpose:</strong> the reason you write; what you want</li>
+                <li class="bg-gray-50 p-3 rounded border border-gray-200"><strong>deadline:</strong> the last day or time to do something</li>
+            </ul>
+        </div>
+
+        <!-- SLIDE 2: Write-in Check -->
+        <div id="slide-2" class="lesson-slide hidden">
+            <h2 class="text-xl font-bold text-indigo-900 mb-4">2. Vocabulary Check</h2>
+            <form hx-post="/evaluate-write-in" hx-target="#vocab-feedback" class="space-y-6">
+                <div class="flex items-center space-x-2 text-gray-800">
+                    <span>1. Who is the </span>
+                    <input type="text" name="q1_answer" required class="border border-gray-300 rounded px-2 py-1 w-32 focus:ring-2 focus:ring-indigo-500">
+                    <span> of this email?</span>
+                </div>
+                <div class="flex items-center space-x-2 text-gray-800">
+                    <span>2. The </span>
+                    <input type="text" name="q2_answer" required class="border border-gray-300 rounded px-2 py-1 w-32 focus:ring-2 focus:ring-indigo-500">
+                    <span> of this email is to ask for a new printer.</span>
+                </div>
+                <button type="submit" class="bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-indigo-700">Check Answers</button>
+            </form>
+            <div id="vocab-feedback"></div>
+        </div>
+
+        <!-- SLIDE 3: Reading Comprehension -->
+        <div id="slide-3" class="lesson-slide hidden">
+            <h2 class="text-xl font-bold text-indigo-900 mb-4">3. Read & Compare</h2>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-red-50 p-4 border border-red-200 rounded text-sm">
+                    <strong>Email A</strong><br><br>Subject: Hello<br><br>Hi Anna, how are you? The weather is terrible this week! On Monday I had a meeting with Lukas... I think it is a good idea for us. It is not very cheap. What do you think?
+                </div>
+                <div class="bg-green-50 p-4 border border-green-200 rounded text-sm">
+                    <strong>Email B</strong><br><br>Subject: Budget request – Milan trade fair, 12–14 March<br><br>Dear Anna, I’m writing to ask for a budget for the Home & Garden trade fair... The total cost is €2,400. Could you approve the budget by Friday, 5 February?
+                </div>
+            </div>
+            <form hx-post="/evaluate-reading" hx-target="#reading-feedback" class="bg-gray-50 border border-gray-200 p-4 rounded-lg space-y-4">
+                <div class="flex justify-between text-sm"><label>1. Clear subject line?</label><select name="q1" class="border p-1 rounded"><option value="">Select...</option><option value="A">Email A</option><option value="B">Email B</option></select></div>
+                <div class="flex justify-between text-sm"><label>2. Talks about the weather?</label><select name="q2" class="border p-1 rounded"><option value="">Select...</option><option value="A">Email A</option><option value="B">Email B</option></select></div>
+                <div class="flex justify-between text-sm"><label>3. Gives a deadline?</label><select name="q3" class="border p-1 rounded"><option value="">Select...</option><option value="A">Email A</option><option value="B">Email B</option></select></div>
+                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2 rounded hover:bg-indigo-700">Submit Answers</button>
+            </form>
+            <div id="reading-feedback"></div>
+        </div>
+
+        <!-- SLIDE 4: Extraction -->
+        <div id="slide-4" class="lesson-slide hidden">
+            <h2 class="text-xl font-bold text-indigo-900 mb-4">4. Extracting Key Data</h2>
+            <div class="bg-gray-50 p-4 border rounded text-sm mb-6 font-serif">
+                Hello Tomas,<br><br>We have finalized the logistics for the Home & Garden trade fair. The total cost is €2,400, which includes the stand and travel. The shipping containers will arrive on the 26th of October, 2026. Please ensure payment is approved.
+            </div>
+            <form hx-post="/evaluate-extraction" hx-target="#extraction-feedback" class="bg-white border p-4 rounded-lg space-y-4">
+                <div class="flex justify-between text-sm"><label>Delivery Date (YYYY-MM-DD):</label><input type="text" name="delivery_date" required class="border rounded px-3 py-1 w-40"></div>
+                <div class="flex justify-between text-sm"><label>Total Invoice Amount (Numbers only):</label><input type="text" name="invoice_total" required class="border rounded px-3 py-1 w-40"></div>
+                <button type="submit" class="w-full bg-indigo-600 text-white font-bold py-2 rounded">Submit to CRM</button>
+            </form>
+            <div id="extraction-feedback"></div>
+        </div>
+
+        <!-- SLIDE 5: Useful Phrases -->
+        <div id="slide-5" class="lesson-slide hidden">
+            <h2 class="text-xl font-bold text-indigo-900 mb-4">5. Useful Phrases</h2>
+            <table class="w-full text-left border-collapse bg-gray-50 rounded-lg overflow-hidden border">
+                <tr class="bg-gray-200"><th class="py-2 px-4 border-b">Part of email</th><th class="py-2 px-4 border-b">Phrase</th></tr>
+                <tr><td class="py-2 px-4 border-b">Purpose</td><td class="py-2 px-4 border-b">I’m writing to ask for...</td></tr>
+                <tr><td class="py-2 px-4 border-b">Reason & Details</td><td class="py-2 px-4 border-b">We need it because... The cost is...</td></tr>
+                <tr><td class="py-2 px-4">Request & Deadline</td><td class="py-2 px-4">Could you [verb] ... by [day]?</td></tr>
+            </table>
+        </div>
+
+        <!-- SLIDE 6: Email Drafting -->
+        <div id="slide-6" class="lesson-slide hidden">
+            <h2 class="text-xl font-bold text-indigo-900 mb-4">6. Your Turn to Write</h2>
+            <div class="bg-indigo-50 border p-4 rounded-lg mb-4">
+                <h3 class="font-bold text-indigo-900">Situation: New laptop</h3>
+                <ul class="list-disc pl-5 text-sm space-y-1"><li>Your laptop is slow (10 mins to start).</li><li>Costs €900.</li><li>Need answer by Wednesday.</li></ul>
+            </div>
+            <form hx-post="/evaluate-email" hx-target="#email-feedback" hx-indicator="#loading">
+                <input type="hidden" name="scenario_id" value="A2_UNIT_1_LAPTOP">
+                <textarea name="student_text" rows="4" required class="w-full border rounded-lg p-3 mb-4" placeholder="Dear Anna, ..."></textarea>
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700">Submit to AI</button>
+            </form>
+            <div id="loading" class="htmx-indicator mt-4 text-center text-blue-600">AI is grading...</div>
+            <div id="email-feedback"></div>
+        </div>
+
+        <!-- SLIDE 7: Stress Test -->
+        <div id="slide-7" class="lesson-slide hidden max-w-sm mx-auto w-full">
+            <div id="stress-briefing" class="bg-indigo-50 border p-6 rounded-xl text-center block">
+                <div class="text-3xl mb-3">⏱️</div>
+                <h2 class="text-xl font-bold mb-2">Live Chat Drill</h2>
+                <p class="text-sm mb-6">Anna needs an update. You have <strong>15 seconds</strong> to reply.</p>
+                <button onclick="startStressTest()" class="bg-indigo-600 text-white font-bold py-3 px-8 rounded-full w-full">Start Drill</button>
+            </div>
+            <div id="stress-chat-ui" class="hidden flex-col rounded-xl overflow-hidden border">
+                <div class="w-full bg-gray-200 h-2"><div id="timer-bar" class="bg-green-500 h-full w-full transition-all duration-100 ease-linear"></div></div>
+                <div class="bg-gray-900 text-white p-3 font-bold flex items-center space-x-2">
+                    <div class="w-3 h-3 bg-green-500 rounded-full"></div><span>Anna (Manager)</span>
+                    <span id="timer-text" class="ml-auto text-sm font-mono text-gray-300">15.0s</span>
+                </div>
+                <div class="bg-gray-100 h-64 p-4 overflow-y-auto flex flex-col space-y-4" id="stress-history">
+                    <div class="self-start bg-white border p-3 rounded-r-lg rounded-bl-lg max-w-[80%] text-sm">Hi! Quick question: Do you know when the Vietnam supplier is arriving?</div>
+                </div>
+                <form id="stress-form" hx-post="/evaluate-stress-test" hx-target="#stress-history" hx-swap="beforeend" class="bg-white p-3 flex space-x-2 border-t">
+                    <input type="text" id="stress-input" name="chat_reply" required autocomplete="off" class="flex-grow bg-gray-100 rounded-full px-4 py-2 text-sm" placeholder="Type quickly...">
+                    <button type="submit" id="stress-submit-btn" class="bg-indigo-600 text-white rounded-full w-10 h-10 flex items-center justify-center">➤</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="border-t mt-8 pt-4 flex justify-between">
+            <button id="btn-prev" onclick="changeSlide(-1)" class="hidden bg-gray-200 text-gray-700 font-bold py-2 px-6 rounded-lg">Previous</button>
+            <div class="flex-grow"></div>
+            <button id="btn-next" onclick="changeSlide(1)" class="bg-gray-800 text-white font-bold py-2 px-6 rounded-lg">Next</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 7;
+
+        function changeSlide(direction) {
+            document.getElementById(`slide-${currentSlide}`).classList.add('hidden');
+            document.getElementById(`slide-${currentSlide}`).classList.remove('block');
+            currentSlide += direction;
+            document.getElementById(`slide-${currentSlide}`).classList.remove('hidden');
+            document.getElementById(`slide-${currentSlide}`).classList.add('block');
+            document.getElementById('slide-counter').innerText = `Part ${currentSlide} of ${totalSlides}`;
+            document.getElementById('btn-prev').classList.toggle('hidden', currentSlide === 1);
+            document.getElementById('btn-next').classList.toggle('hidden', currentSlide === totalSlides);
+        }
+
+        let drillTimer;
+        let timeLeft = 15.0;
+
+        function startStressTest() {
+            document.getElementById('stress-briefing').classList.replace('block', 'hidden');
+            document.getElementById('stress-chat-ui').classList.replace('hidden', 'flex');
+            document.getElementById('stress-input').focus();
+
+            drillTimer = setInterval(() => {
+                timeLeft -= 0.1;
+                document.getElementById('timer-text').innerText = Math.max(0, timeLeft).toFixed(1) + 's';
+                
+                const percentage = (timeLeft / 15.0) * 100;
+                const timerBar = document.getElementById('timer-bar');
+                timerBar.style.width = percentage + '%';
+                
+                if (percentage < 30) { timerBar.classList.replace('bg-green-500', 'bg-red-500'); timerBar.classList.replace('bg-yellow-400', 'bg-red-500'); }
+                else if (percentage < 60) { timerBar.classList.replace('bg-green-500', 'bg-yellow-400'); }
+
+                if (timeLeft <= 0) {
+                    clearInterval(drillTimer);
+                    const input = document.getElementById('stress-input');
+                    input.value = "TIMEOUT_FAIL";
+                    input.disabled = true;
+                    document.getElementById('stress-submit-btn').disabled = true;
+                    htmx.trigger('#stress-form', 'submit');
+                }
+            }, 100);
+        }
+
+        document.getElementById('stress-form').addEventListener('submit', function(e) {
+            if (timeLeft > 0) {
+                clearInterval(drillTimer);
+                document.getElementById('timer-text').innerText = "Sent!";
+                document.getElementById('timer-bar').style.width = '0%';
+                document.getElementById('stress-input').readOnly = true;
+                document.getElementById('stress-submit-btn').disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>
