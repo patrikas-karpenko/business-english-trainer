@@ -1,1 +1,7 @@
-
+fastapi
+uvicorn
+python-multipart
+openai
+supabase
+python-dotenv
+jinja2
