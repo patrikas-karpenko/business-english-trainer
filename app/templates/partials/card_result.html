@@ -1,0 +1,22 @@
+{% import "icons.html" as i %}
+<div id="card-slot" class="stack">
+  <section class="card">
+    <div class="row"><span class="pill {{ 'fill' if stage == 'fill' else 'use' }}">{{ stage|capitalize }}</span>
+      <span class="pill {{ 'ok' if r.correct else 'bad' }}">{{ 'Correct' if r.correct else 'Not yet' }}</span></div>
+    {% if stage == 'fill' %}
+    <p class="small muted">Your answer: {{ inputs|join(' · ') }}</p>
+    <p style="font-size: 18px; line-height: 1.6">{{ r.expected }}</p>
+    {% else %}
+    <div class="thread"><div class="bubble me">{{ inputs[0] }}</div></div>
+    {% endif %}
+    <div class="feedback {{ 'ok' if r.correct else 'info' }}">
+      {% if r.correct %}
+        <span>{% if r.rating == 'Easy' %}Fast and correct.{% elif r.rating == 'Hard' %}Correct — a bit slow, so it comes back sooner.{% else %}Well done.{% endif %}</span>
+      {% else %}
+        <span>{% if stage == 'use' %}Your reply didn't use the phrase. Try it with:{% else %}The phrase is:{% endif %}</span>
+      {% endif %}
+      <span style="font-size: 18px">{{ r.frame|frame }}</span>
+    </div>
+  </section>
+  <button class="btn primary block" type="button" hx-get="/cards/next?lesson={{ lesson_id }}&reviewed={{ reviewed }}" hx-target="#card-slot" hx-swap="outerHTML" autofocus>Next card</button>
+</div>

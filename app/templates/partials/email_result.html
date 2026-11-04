@@ -1,0 +1,16 @@
+<div class="stack">
+  <section class="card">
+    <div class="spread"><h2>Checks</h2><span class="pill {{ 'ok' if all_ok else 'warn' }}">{{ checks|selectattr('passed')|list|length }} / {{ checks|length }}</span></div>
+    <ul class="checks">
+      {% for c in checks %}<li class="{{ 'yes' if c.passed else 'no' }}"><span class="icon">{{ '✓' if c.passed else '✗' }}</span><span>{{ c.message }}</span></li>{% endfor %}
+    </ul>
+  </section>
+  <section class="card">
+    <h2>One thing to fix</h2>
+    <p class="muted">{{ d5.priority_pattern }}</p>
+    <div class="feedback info"><strong>Revision task</strong><span>{{ d5.revision_target }}</span></div>
+    {% if comment %}<div class="feedback info"><strong>Coach</strong><span>{{ comment }}</span></div>{% endif %}
+  </section>
+  {% set n = 5 %}
+  <form method="post" action="/lesson/{{ lesson.lesson_id }}/drill/5/complete"><button class="btn primary block" type="submit">Revise it</button></form>
+</div>

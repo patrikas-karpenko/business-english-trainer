@@ -1,0 +1,18 @@
+{% extends "drill_base.html" %}
+{% block drill %}
+<form class="stack" hx-post="/lesson/{{ lesson.lesson_id }}/drill/3" hx-target="#result" hx-swap="innerHTML">
+  <input type="hidden" name="pasted" value="0">
+  <section class="card">
+    <p class="muted">{{ d.intro }}</p>
+    <ol class="stack" style="padding-left: 20px; margin: 0">
+      {% for it in d['items'] %}
+      {% set parts = it.text.split('[_____]') %}
+      <li style="line-height: 2">{{ parts[0] }}<label class="sr-only" for="item{{ it.item_no }}">Gap {{ it.item_no }}</label><input class="gap-input" id="item{{ it.item_no }}" name="item{{ it.item_no }}" size="9" autocomplete="off" autocapitalize="off" spellcheck="false" data-nopaste>{{ parts[1:]|join('[_____]') }}</li>
+      {% endfor %}
+    </ol>
+    {% if d.extra %}<p class="small muted">{{ d.extra }}</p>{% endif %}
+  </section>
+  <button class="btn primary block" type="submit">Check</button>
+</form>
+<div id="result" aria-live="polite"></div>
+{% endblock %}

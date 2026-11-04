@@ -1,0 +1,12 @@
+{% macro svg(d, size=22, sw=2) %}<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="{{ sw }}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{{ d|safe }}</svg>{% endmacro %}
+{% macro home(s=22) %}{{ svg('<path d="M3 11l9-7 9 7v9H3z"/>', s) }}{% endmacro %}
+{% macro cards(s=22) %}{{ svg('<rect x="4" y="6" width="14" height="14" rx="2"/><path d="M8 3h12v14"/>', s) }}{% endmacro %}
+{% macro book(s=22) %}{{ svg('<path d="M4 19V5h16v14z"/><path d="M8 9h8M8 13h5"/>', s) }}{% endmacro %}
+{% macro user(s=22) %}{{ svg('<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>', s) }}{% endmacro %}
+{% macro close(s=22) %}{{ svg('<path d="M18 6L6 18M6 6l12 12"/>', s) }}{% endmacro %}
+{% macro back(s=22) %}{{ svg('<path d="M15 18l-6-6 6-6"/>', s) }}{% endmacro %}
+{% macro mail(s=14) %}{{ svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>', s) }}{% endmacro %}
+{% macro chat(s=14) %}{{ svg('<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>', s) }}{% endmacro %}
+{% macro check(s=16) %}{{ svg('<path d="M5 12l5 5L20 7"/>', s, 3) }}{% endmacro %}
+{% macro moon(s=20) %}{{ svg('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>', s) }}{% endmacro %}
+{% macro send(s=20) %}{{ svg('<path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/>', s) }}{% endmacro %}

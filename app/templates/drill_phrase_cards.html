@@ -1,0 +1,5 @@
+{% extends "drill_base.html" %}
+{% block drill %}
+<p class="muted">{{ d.intro }}</p>
+{% with lesson_id=first.lesson_id, reviewed=first.reviewed, card=first.card %}{% include "partials/card.html" %}{% endwith %}
+{% endblock %}

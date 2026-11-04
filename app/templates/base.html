@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}Commerce English{% endblock %}</title>
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="stylesheet" href="/static/app.css">
+<script src="/static/htmx.min.js" defer></script>
+<script src="/static/app.js" defer></script>
+</head>
+<body>
+{% import "icons.html" as i %}
+<div class="app">
+  {% block chrome %}{% endblock %}
+  <main id="main">{% block content %}{% endblock %}</main>
+  {% if tab %}
+  <nav class="tabbar" aria-label="Main">
+    <a href="/today" {% if tab == 'today' %}aria-current="page"{% endif %}>{{ i.home() }}Today</a>
+    <a href="/cards" {% if tab == 'cards' %}aria-current="page"{% endif %}>{{ i.cards() }}Cards</a>
+    <a href="/lessons" {% if tab == 'lessons' %}aria-current="page"{% endif %}>{{ i.book() }}Lessons</a>
+    <a href="/me" {% if tab == 'me' %}aria-current="page"{% endif %}>{{ i.user() }}Me</a>
+  </nav>
+  {% endif %}
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<div class="stack">
+  <div class="feedback {{ 'ok' if score == results|length else 'info' }}">
+    <strong>{{ score }} of {{ results|length }} correct</strong>
+    <ul class="checks">
+      {% for r in results %}
+      <li class="{{ 'yes' if r.ok else 'no' }}"><span class="icon">{{ '✓' if r.ok else '✗' }}</span>
+        <span>{{ r.no }}. {% if r.ok %}{{ r.answer }}{% else %}{{ r.accept|join(' / ') }}{% if r.answer %} <span class="small">(you: {{ r.answer }})</span>{% endif %}{% endif %}</span></li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% set n = 3 %}{% include "partials/continue.html" %}
+</div>

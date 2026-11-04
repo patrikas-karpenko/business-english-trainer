@@ -1,0 +1,22 @@
+{% extends "drill_base.html" %}
+{% block drill %}
+<section class="card">
+  {% for b in d.blocks %}
+    {% if b.type == 'note' %}<p class="muted">{{ b.text }}</p>
+    {% else %}<div class="box">{% for line in b.lines %}{{ line }}
+{% endfor %}</div>{% endif %}
+  {% endfor %}
+  {% if d.glossary %}<p class="small muted">{{ d.glossary }}</p>{% endif %}
+</section>
+<section class="card">
+  <h2>Tasks</h2>
+  {% for t in d.tasks %}<p>{{ t }}</p>{% endfor %}
+  <label for="notes">Your answers (notes)</label>
+  <textarea id="notes" rows="4" style="min-height: 96px" data-nopaste></textarea>
+  <details>
+    <summary>Show answers</summary>
+    <div class="feedback info">{% for k in lesson.answer_key %}{% if k.startswith('Reading') %}<span>{{ k }}</span>{% endif %}{% endfor %}</div>
+  </details>
+</section>
+{% include "partials/continue.html" %}
+{% endblock %}

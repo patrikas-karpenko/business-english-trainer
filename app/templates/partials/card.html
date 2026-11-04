@@ -1,0 +1,71 @@
+{% import "icons.html" as i %}
+<div id="card-slot" class="stack">
+{% if not card %}
+  <section class="card" style="align-items: flex-start">
+    <span class="pill ok">Done</span>
+    {% if lesson_id %}
+    <h2>Cards finished for this lesson</h2>
+    <p class="muted">New phrases will come back as Fill cards, then as Use cards.</p>
+    {% else %}
+    <h2>No cards due right now</h2>
+    <p class="muted">Come back later — cards return when you are about to forget them.</p>
+    {% endif %}
+  </section>
+  {% if lesson_id %}
+  <form method="post" action="/lesson/{{ lesson_id }}/drill/1/complete"><button class="btn primary block" type="submit">Continue</button></form>
+  {% else %}
+  <a class="btn block" href="/today">Back to today</a>
+  {% endif %}
+{% elif card.stage == 'meet' %}
+  <section class="card" aria-label="New phrase">
+    <div class="row"><span class="pill meet">New phrase</span><span class="small muted">Study it — no test yet</span></div>
+    <p class="small muted">{{ card.meet.use }}</p>
+    <p class="phrase">{{ card.meet.frame|frame }}</p>
+    <div class="divider"></div>
+    {% for ex in card.meet.examples %}
+    <div class="example">
+      <span class="where">{% if ex.where == 'email' %}{{ i.mail() }}{% else %}{{ i.chat() }}{% endif %}{{ ex.where }}</span>
+      <span>{{ ex.text|highlight(ex.highlight) }}</span>
+    </div>
+    {% endfor %}
+    <p class="small muted">Learn the <mark>highlighted part</mark>. The <span class="slot">grey words</span> change each time.</p>
+  </section>
+  <form hx-post="/cards/meet" hx-target="#card-slot" hx-swap="outerHTML">
+    <input type="hidden" name="phrase_id" value="{{ card.phrase_id }}">
+    <input type="hidden" name="lesson" value="{{ lesson_id }}">
+    <input type="hidden" name="reviewed" value="{{ reviewed }}">
+    <button class="btn primary block" type="submit" autofocus>Got it — next</button>
+  </form>
+{% else %}
+  <form class="stack" hx-post="/cards/answer" hx-target="#card-slot" hx-swap="outerHTML" data-timed>
+    <input type="hidden" name="phrase_id" value="{{ card.phrase_id }}">
+    <input type="hidden" name="stage" value="{{ card.stage }}">
+    <input type="hidden" name="variant" value="{{ card.variant }}">
+    <input type="hidden" name="vars" value="{{ card.vars|tojson|forceescape }}">
+    <input type="hidden" name="lesson" value="{{ lesson_id }}">
+    <input type="hidden" name="reviewed" value="{{ reviewed }}">
+    <input type="hidden" name="response_ms" value="">
+    <input type="hidden" name="pasted" value="0">
+    <section class="card">
+      {% if card.stage == 'fill' %}
+      <div class="row"><span class="pill fill">Fill</span><span class="small muted">{% if card.hint_level == 0 %}First letters shown{% elif card.hint_level == 1 %}Word count shown{% else %}No hints{% endif %}</span></div>
+      <p class="muted">{{ card.context }}</p>
+      {% set ns = namespace(g=0) %}
+      <p class="sentence">{% for s in card.segments %}{% if s.gap is defined %}<label class="sr-only" for="gap{{ s.gap }}">Gap {{ s.gap + 1 }}</label><input class="gap-input" id="gap{{ s.gap }}" name="gap{{ s.gap }}" placeholder="{{ s.hint }}" size="{{ s.size }}" autocomplete="off" autocapitalize="off" spellcheck="false" data-nopaste required>{% set ns.g = ns.g + 1 %}{% else %}{{ s.text }}{% endif %}{% endfor %}</p>
+      <input type="hidden" name="n_gaps" value="{{ ns.g }}">
+      {% else %}
+      <div class="row"><span class="pill use">Use</span><span class="small muted">Any correct reply passes</span></div>
+      <div class="thread">
+        <span class="note">{{ card.who }}</span>
+        {% if card.message %}<div class="bubble them">{{ card.message }}</div>{% endif %}
+        {% if card.situation %}<p class="small muted" style="text-align: center">{{ card.situation }}</p>{% endif %}
+      </div>
+      <div class="box" style="white-space: normal"><span class="small muted" style="display: block; font-weight: 600; letter-spacing: .04em">YOUR TASK</span>{{ card.task }}</div>
+      <label for="reply">Your reply</label>
+      <textarea id="reply" name="reply" rows="3" style="min-height: 88px" autocomplete="off" data-nopaste required placeholder="Type your reply…"></textarea>
+      {% endif %}
+    </section>
+    <button class="btn primary block" type="submit">Check</button>
+  </form>
+{% endif %}
+</div>

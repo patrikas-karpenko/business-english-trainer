@@ -1,0 +1,19 @@
+{% import "icons.html" as i %}
+{% if t.new_round and t.round.title %}<span class="note"><strong>{{ t.round.title }}</strong>{% if t.r > 0 %} · {{ t.round.learner_card }}{% endif %}</span>{% endif %}
+{% if t.turn.bot_message %}<div class="bubble them"><span class="who">{{ t.turn.speaker }}</span>{{ t.turn.bot_message }}</div>
+{% elif t.new_round %}<span class="note">You write first.</span>{% endif %}
+<form class="composer" hx-post="/lesson/{{ lesson.lesson_id }}/drill/4/turn" hx-target="this" hx-swap="outerHTML" data-timed data-seconds="{{ t.timer }}">
+  <input type="hidden" name="r" value="{{ t.r }}">
+  <input type="hidden" name="t" value="{{ t.t }}">
+  <input type="hidden" name="response_ms" value="0">
+  <input type="hidden" name="pasted" value="0">
+  <input type="hidden" name="timed_out" value="0">
+  <div class="spread"><label for="reply-{{ t.r }}-{{ t.t }}">Your message</label><span class="small"><span class="timer" data-countdown>{{ t.timer // 60 }}:{{ '%02d' % (t.timer % 60) }}</span> to reply</span></div>
+  {% if t.hints %}
+  <div class="chips" aria-label="Phrases from this lesson">{% for p in t.phrases %}<span class="chip">{{ p.english_frame|frame }}</span>{% endfor %}</div>
+  {% endif %}
+  <div class="row" style="align-items: flex-end">
+    <textarea id="reply-{{ t.r }}-{{ t.t }}" name="reply" rows="2" style="min-height: 64px" placeholder="Type your message…" autocomplete="off" data-nopaste required></textarea>
+    <button class="btn primary" type="submit" aria-label="Send" style="min-height: 52px; width: 52px; padding: 0; flex: none">{{ i.send() }}</button>
+  </div>
+</form>
