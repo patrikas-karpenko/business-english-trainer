@@ -1,0 +1,5 @@
+<div class="stack">
+  {% if key %}<div class="feedback info"><strong>Answers</strong>{% for k in key %}<span>{{ k|replace('Warm-up:', '')|trim }}</span>{% endfor %}</div>
+  {% else %}<div class="feedback ok">Saved. You'll see it again after the email task.</div>{% endif %}
+  {% set n = 0 %}{% include "partials/continue.html" %}
+</div>

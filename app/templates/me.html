@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Me · Commerce English{% endblock %}
+{% block content %}
+<h1>{{ user.name }}</h1>
+<section class="card">
+  <h2>Appearance</h2>
+  <div class="theme-choice" role="group" aria-label="Theme">
+    <button class="btn" type="button" data-theme-set="light" aria-pressed="false">Light</button>
+    <button class="btn" type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+    <button class="btn" type="button" data-theme-set="system" aria-pressed="false">System</button>
+  </div>
+</section>
+<section class="card">
+  <h2>Your phrases</h2>
+  <p class="muted">{{ stats.owned }} owned · {{ stats.introduced }} seen · {{ stats.total }} in Level 1</p>
+  <p class="small muted">A phrase is <strong>owned</strong> when you use it correctly in your own reply, and again at least 7 days later.</p>
+</section>
+<section class="card">
+  <h2>Feedback</h2>
+  <p class="small muted">{% if llm_on %}AI coaching comments are on.{% else %}Rule-based checks only (AI coaching is off on this server).{% endif %}</p>
+</section>
+<a class="btn block" href="/logout">Sign out</a>
+{% endblock %}

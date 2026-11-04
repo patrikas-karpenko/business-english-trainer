@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Lessons · Commerce English{% endblock %}
+{% block content %}
+<h1>Lessons</h1>
+<p class="muted">Level 1 · A2–B1 · Harbourline Housewares and Northway Trading</p>
+<div class="card" style="gap: 0; padding: 4px 16px">
+  {% for row in rows %}
+  {% set l = row.lesson %}
+  <div style="padding: 12px 0; {% if not loop.last %}border-bottom: 1px solid var(--border){% endif %}">
+    {% if row.open %}
+    <a class="lesson-item" href="/lesson/{{ l.lesson_id }}">
+    {% else %}
+    <div class="lesson-item" aria-disabled="true">
+    {% endif %}
+      <span class="num {% if row.p.lesson_completed_at %}done{% elif not row.open %}locked{% endif %}">{{ loop.index }}</span>
+      <span class="stack-sm" style="gap: 0; flex: 1">
+        <strong>{{ l.title }}</strong>
+        <span class="small muted">{{ {'A': 'Email', 'B': 'Reading', 'C': 'Chat', 'D': 'Checkpoint'}[l.type] }} · {{ l.sessions[0].minutes + l.sessions[1].minutes }} min{% if not row.open %} · locked{% endif %}</span>
+      </span>
+    {% if row.open %}</a>{% else %}</div>{% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

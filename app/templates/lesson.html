@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ lesson.title }} · Commerce English{% endblock %}
+{% block content %}
+<a href="/lessons" class="row small" style="text-decoration: none">{{ i.back(18) }}All lessons</a>
+<div class="stack-sm">
+  <span class="small muted">Lesson {{ lesson.lesson_id }} · {{ {'A': 'Email', 'B': 'Reading', 'C': 'Chat', 'D': 'Checkpoint'}[lesson.type] }}</span>
+  <h1>{{ lesson.title }}</h1>
+  <p class="muted">{{ lesson.objective }}</p>
+</div>
+{% if request.query_params.get('session1') %}<div class="feedback ok" role="status">Session 1 done. Come back later — or now — for session 2.</div>{% endif %}
+{% if request.query_params.get('finished') %}<div class="feedback ok" role="status">Lesson finished. Your new phrases will come back as cards.</div>{% endif %}
+{% for s in lesson.sessions %}
+<section class="card">
+  <div class="spread"><h2>Session {{ s.session_no }}</h2><span class="small muted">{{ s.minutes }} min</span></div>
+  <div class="stack-sm">
+  {% for dn in s.drills %}
+    {% set st = p.drill_status.get(dn|string) %}
+    <a class="row" href="/lesson/{{ lesson.lesson_id }}/drill/{{ dn }}" style="text-decoration: none; color: inherit; min-height: 44px">
+      {% if st == 'done' %}<span class="num done" style="width: 26px; height: 26px">{{ i.check(14) }}</span>
+      {% else %}<span class="num" style="width: 26px; height: 26px; font-size: 13px">{{ dn }}</span>{% endif %}
+      <span style="flex: 1">{{ DRILL_NAMES[dn] }}</span>
+      {% if dn == p.current_drill and not p.lesson_completed_at %}<span class="pill new">Next</span>{% endif %}
+    </a>
+  {% endfor %}
+  </div>
+</section>
+{% endfor %}
+<a class="btn primary block" href="/lesson/{{ lesson.lesson_id }}/drill/{{ p.current_drill }}">{% if p.lesson_completed_at %}Review from drill 6{% elif p.current_drill == 0 %}Start{% else %}Continue with {{ DRILL_NAMES[p.current_drill]|lower }}{% endif %}</a>
+{% endblock %}

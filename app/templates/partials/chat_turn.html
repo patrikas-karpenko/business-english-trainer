@@ -1,0 +1,11 @@
+<div class="bubble me">{{ reply }}</div>
+{% if res.passed %}<div class="verdict ok">✓ {{ turn.expected_learner_move }}{% if timed_out %} · over time{% endif %}</div>
+{% else %}<div class="verdict bad">Try next time: {{ turn.expected_learner_move|lower }}. For example: “{{ turn.model_reply }}”</div>{% endif %}
+{% if comment %}<div class="verdict ok" style="background: var(--accent-soft); color: var(--accent-ink)">{{ comment }}</div>{% endif %}
+{% if closing %}<div class="bubble them"><span class="who">{{ closing_from }}</span>{{ closing }}</div>{% endif %}
+{% if next %}
+  {% with t=next %}{% include "partials/chat_composer.html" %}{% endwith %}
+{% else %}
+  <div class="feedback ok" style="margin-top: 8px">Chat finished. Next: the email.</div>
+  {% set n = 4 %}{% include "partials/continue.html" %}
+{% endif %}

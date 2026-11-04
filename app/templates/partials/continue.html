@@ -1,0 +1,3 @@
+<form method="post" action="/lesson/{{ lesson.lesson_id }}/drill/{{ n }}/complete">
+  <button class="btn primary block" type="submit">{% if n == 3 %}Finish session 1{% elif n == 6 %}Finish lesson{% else %}Continue{% endif %}</button>
+</form>

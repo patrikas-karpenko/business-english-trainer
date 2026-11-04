@@ -1,0 +1,31 @@
+{% extends "drill_base.html" %}
+{% block drill %}
+<form class="stack" hx-post="/lesson/{{ lesson.lesson_id }}/drill/0" hx-target="#result" hx-swap="innerHTML">
+  <input type="hidden" name="pasted" value="0">
+  <section class="card">
+    <h2>{{ d.title }}</h2>
+    {% if d.intro %}<p class="muted">{{ d.intro }}</p>{% endif %}
+    {% if d['items'] %}
+    <input type="hidden" name="n_items" value="{{ d['items']|length }}">
+    <ol class="stack" style="padding-left: 20px; margin: 0">
+      {% for it in d['items'] %}{% set k = loop.index0 %}
+      <li style="line-height: 2">
+        {% set parts = it.split('[_____]') %}
+        {% if parts|length == 1 %}{{ it }}<br><label class="sr-only" for="item{{ k }}">Answer {{ loop.index }}</label><input id="item{{ k }}" name="item{{ k }}" type="text" autocomplete="off" data-nopaste>
+        {% else %}{% for p in parts %}{{ p }}{% if not loop.last %}<label class="sr-only" for="item{{ k }}_{{ loop.index0 }}">Gap</label><input class="gap-input" id="item{{ k }}_{{ loop.index0 }}" name="item{{ k }}" size="8" autocomplete="off" data-nopaste>{% endif %}{% endfor %}{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+    {% endif %}
+    {% if d.instinct_check or not d['items'] %}
+    <div class="stack-sm">
+      {% if d.instinct_check %}<p>{{ d.instinct_check }}</p>{% endif %}
+      <label for="instinct">Your first sentence (saved — you'll compare it after the email)</label>
+      <textarea id="instinct" name="instinct" rows="3" style="min-height: 88px" data-nopaste required></textarea>
+    </div>
+    {% endif %}
+  </section>
+  <button class="btn primary block" type="submit">Check</button>
+</form>
+<div id="result" aria-live="polite"></div>
+{% endblock %}

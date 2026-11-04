@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Sign in · Commerce English{% endblock %}
+{% block content %}
+<div class="stack" style="margin-top: 8vh">
+  <div class="stack-sm">
+    <span class="pill new" style="align-self: flex-start">Pilot</span>
+    <h1>Commerce English</h1>
+    <p class="muted">Write your own work emails and chats — fast, clear and without ChatGPT.</p>
+  </div>
+  <form class="card" method="post" action="/login">
+    {% if error %}<div class="feedback bad" role="alert">{{ error }}</div>{% endif %}
+    <div class="stack-sm">
+      <label for="name">Your name</label>
+      <input id="name" name="name" type="text" autocomplete="name" placeholder="Li Wei" required>
+    </div>
+    {% if need_code %}
+    <div class="stack-sm">
+      <label for="code">Pilot code</label>
+      <input id="code" name="code" type="text" autocomplete="off" required>
+    </div>
+    {% endif %}
+    <button class="btn primary block" type="submit">Start</button>
+    <p class="small muted">Use the same name next time to continue where you left off.</p>
+  </form>
+  <button class="btn" type="button" data-theme-toggle style="align-self: center">{{ i.moon() }}Light / dark</button>
+</div>
+{% endblock %}

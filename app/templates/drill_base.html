@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ DRILL_NAMES[n] }} · Lesson {{ lesson.lesson_id }}{% endblock %}
+{% block chrome %}
+<div class="topbar">
+  <a class="iconbtn" href="/lesson/{{ lesson.lesson_id }}" aria-label="Close and go back to the lesson">{{ i.close() }}</a>
+  <div class="progress" role="progressbar" aria-label="Lesson progress" aria-valuemin="0" aria-valuemax="7" aria-valuenow="{{ n + 1 }}"><div style="width: {{ ((n + 1) / 7 * 100)|round }}%"></div></div>
+  <span class="small muted">{{ n + 1 }}/7</span>
+</div>
+{% endblock %}
+{% block content %}
+<div class="stack-sm">
+  <span class="small muted">Lesson {{ lesson.lesson_id }} · Session {{ 1 if n < 4 else 2 }} · Drill {{ n }}</span>
+  <h1>{{ DRILL_NAMES[n] }}</h1>
+</div>
+{% block drill %}{% endblock %}
+{% endblock %}

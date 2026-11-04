@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Today · Commerce English{% endblock %}
+{% block content %}
+<div class="spread">
+  <div class="stack-sm" style="gap: 2px">
+    <span class="small muted">Level 1 · Lesson {{ lesson.lesson_id }}</span>
+    <h1>Today</h1>
+  </div>
+  <button class="iconbtn" type="button" data-theme-toggle aria-label="Switch light or dark mode">{{ i.moon() }}</button>
+</div>
+
+<section class="card" aria-labelledby="cards-h">
+  <div class="spread">
+    <h2 id="cards-h" class="small muted" style="font-weight: 400">Daily cards</h2>
+    {% if stats.due %}<span class="pill warn">{{ stats.due }} due</span>{% else %}<span class="pill ok">All done</span>{% endif %}
+  </div>
+  <div class="stage-row">
+    <div style="background: var(--fill-soft); color: var(--fill-ink)">Fill {{ stats.due_fill }}</div>
+    <div style="background: var(--ok-soft); color: var(--ok-ink)">Use {{ stats.due_use }}</div>
+    <div style="background: var(--accent-soft); color: var(--accent-ink)">Seen {{ stats.introduced }}/{{ stats.total }}</div>
+  </div>
+  {% if stats.due %}
+  <a class="btn primary block" href="/cards">Review cards · about {{ ([stats.due, 20]|min * 0.3)|round(0, 'ceil')|int }} min</a>
+  {% else %}
+  <p class="small muted">New cards appear in each lesson's Drill 1. Reviews come back when they are due.</p>
+  {% endif %}
+</section>
+
+<section class="card" aria-labelledby="lesson-h">
+  <h2 id="lesson-h" class="small muted" style="font-weight: 400">Lesson {{ lesson.lesson_id }} · {{ lesson.title }}</h2>
+  <div class="stack">
+    {% for s in lesson.sessions %}
+    {% set done = (s.session_no == 1 and p.session1_completed_at) or (s.session_no == 2 and p.lesson_completed_at) %}
+    <div class="row">
+      {% if done %}<span class="num done" style="width: 28px; height: 28px">{{ i.check() }}</span>
+      {% else %}<span class="num" style="width: 28px; height: 28px; font-size: 13px">{{ s.session_no }}</span>{% endif %}
+      <div class="stack-sm" style="gap: 0; flex: 1">
+        <strong>Session {{ s.session_no }}</strong>
+        <span class="small muted">{% if s.session_no == 1 %}Cards · reading · write-in{% else %}Chat · email · revision{% endif %}</span>
+      </div>
+      <span class="small muted">{{ s.minutes }} min</span>
+    </div>
+    {% endfor %}
+  </div>
+  <a class="btn primary block" href="/lesson/{{ lesson.lesson_id }}/drill/{{ p.current_drill }}">
+    {% if p.lesson_completed_at %}Review lesson{% elif p.current_drill == 0 %}Start session 1{% elif p.current_session == 2 and p.current_drill == 4 %}Start session 2{% else %}Continue{% endif %}
+  </a>
+</section>
+
+<div class="grid3">
+  <div class="card tight"><span class="stat">{{ stats.owned }}</span><span class="small muted">phrases owned</span></div>
+  <div class="card tight"><span class="stat">{{ lessons_done }}/{{ lessons_total }}</span><span class="small muted">lessons done</span></div>
+  <div class="card tight"><span class="stat">{{ pastes }}</span><span class="small muted">pastes tried</span></div>
+</div>
+{% endblock %}

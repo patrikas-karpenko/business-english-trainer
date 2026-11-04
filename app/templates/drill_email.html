@@ -1,0 +1,27 @@
+{% extends "drill_base.html" %}
+{% block drill %}
+<section class="card" style="background: var(--warn-soft); border-color: transparent; color: var(--warn-ink)">
+  <strong>The situation</strong>
+  <p>{{ d.scenario }}</p>
+</section>
+<form class="stack" hx-post="/lesson/{{ lesson.lesson_id }}/drill/5" hx-target="#result" hx-swap="innerHTML" data-timed>
+  <input type="hidden" name="pasted" value="0">
+  <input type="hidden" name="response_ms" value="0">
+  <section class="card">
+    <h2>1 · Plan (30 seconds)</h2>
+    <div class="grid3" style="grid-template-columns: repeat(2, minmax(0, 1fr))">
+      {% for f in ['Purpose', 'Action', 'Reason', 'Deadline'] %}
+      <div class="stack-sm"><label for="plan-{{ f|lower }}">{{ f }}</label><input id="plan-{{ f|lower }}" name="plan_{{ f|lower }}" type="text" autocomplete="off" data-nopaste></div>
+      {% endfor %}
+    </div>
+    <input type="hidden" name="plan" value="">
+  </section>
+  <section class="card">
+    <h2>2 · Write</h2>
+    <div class="stack-sm"><label for="subject">Subject</label><input id="subject" name="subject" type="text" autocomplete="off" data-nopaste></div>
+    <div class="stack-sm"><label for="body">Email (greeting, message, closing)</label><textarea id="body" name="body" rows="12" style="min-height: 260px" data-nopaste required placeholder="Hi Tomas,&#10;&#10;…"></textarea></div>
+  </section>
+  <button class="btn primary block" type="submit">Check my email</button>
+</form>
+<div id="result" aria-live="polite"></div>
+{% endblock %}

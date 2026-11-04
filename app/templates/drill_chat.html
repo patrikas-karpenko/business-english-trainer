@@ -1,0 +1,15 @@
+{% extends "drill_base.html" %}
+{% block drill %}
+{% set rnd = d.rounds[0] %}
+<section class="card" style="gap: 8px">
+  <div class="row">
+    <span class="num" aria-hidden="true">{{ bot_name(rnd)[:1] }}</span>
+    <div class="stack-sm" style="gap: 0"><strong>{{ bot_name(rnd) }}</strong><span class="small muted">{{ rnd.bot_persona.split(',', 1)[1]|trim if ',' in rnd.bot_persona else '' }}</span></div>
+  </div>
+  <p class="small" style="color: var(--accent-ink); background: var(--accent-soft); border-radius: 10px; padding: 10px 12px">{{ rnd.learner_card }}</p>
+  {% if not d.hints %}<span class="pill warn" style="align-self: flex-start">Test: no hints</span>{% endif %}
+</section>
+<div class="thread" id="thread" aria-live="polite">
+  {% with t=turn %}{% include "partials/chat_composer.html" %}{% endwith %}
+</div>
+{% endblock %}

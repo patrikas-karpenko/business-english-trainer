@@ -1,0 +1,21 @@
+<div class="stack">
+  <section class="card">
+    <div class="spread"><h2>After revision</h2><span class="pill {{ 'ok' if checks|rejectattr('passed')|list|length == 0 else 'warn' }}">{{ checks|selectattr('passed')|list|length }} / {{ checks|length }}</span></div>
+    <ul class="checks">
+      {% for c in checks %}<li class="{{ 'yes' if c.passed else 'no' }}"><span class="icon">{{ '✓' if c.passed else '✗' }}</span><span>{{ c.message }}</span></li>{% endfor %}
+    </ul>
+  </section>
+  {% if instinct %}
+  <section class="card">
+    <h2>Before and after</h2>
+    <div class="stack-sm"><span class="small muted">Your first try (before the lesson)</span><div class="box">{{ instinct }}</div></div>
+    <div class="stack-sm"><span class="small muted">Your email now</span><div class="box">{{ revised_first }}</div></div>
+  </section>
+  {% endif %}
+  <section class="card">
+    <h2>Model answer</h2>
+    <div class="box">{% for line in d6.model_answer %}{{ line }}
+{% endfor %}</div>
+  </section>
+  {% set n = 6 %}{% include "partials/continue.html" %}
+</div>

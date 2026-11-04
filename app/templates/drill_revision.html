@@ -1,0 +1,14 @@
+{% extends "drill_base.html" %}
+{% block drill %}
+{% set d5 = lesson.drills[5] %}
+<div class="feedback info"><strong>Fix one thing</strong><span>{{ d5.revision_target }}</span></div>
+<form class="stack" hx-post="/lesson/{{ lesson.lesson_id }}/drill/6" hx-target="#result" hx-swap="innerHTML">
+  <input type="hidden" name="pasted" value="0">
+  <section class="card">
+    <div class="stack-sm"><label for="subject">Subject</label><input id="subject" name="subject" type="text" value="{{ draft.subject }}" autocomplete="off" data-nopaste></div>
+    <div class="stack-sm"><label for="body">Your email</label><textarea id="body" name="body" rows="12" style="min-height: 260px" data-nopaste required>{{ draft.body }}</textarea></div>
+  </section>
+  <button class="btn primary block" type="submit">Check and show the model answer</button>
+</form>
+<div id="result" aria-live="polite"></div>
+{% endblock %}

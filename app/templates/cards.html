@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Cards · Commerce English{% endblock %}
+{% block content %}
+<div class="spread"><h1>Cards</h1><span class="small muted">Daily review</span></div>
+{% with lesson_id=first.lesson_id, reviewed=first.reviewed, card=first.card %}{% include "partials/card.html" %}{% endwith %}
+{% endblock %}
